@@ -2,21 +2,29 @@ const balanceElement = document.getElementById('balance');
 const rtpElement = document.getElementById('rtp');
 const betElement = document.getElementById('bet');
 const spinButton = document.getElementById('spin-button');
+const outcomesDiv = document.getElementById('outcomes');
+
 const winsCacheLength = 10;
+
 let outcomeElements = [];
 for (let i = 1; i <= winsCacheLength; i++) {
-  outcomeElements[i - 1] = document.getElementById('outcome' + i);
+  const outcome = document.createElement('p');
+  outcomesDiv.appendChild(outcome);
+  outcomeElements[i - 1] = outcome;
 }
 
 // each element of wins is an array with two value [amount, ifProfit]
 let wins = [];
 function insertWin(amount, didProfit) {
   wins.unshift([amount, didProfit]);
-  delete wins[winsCacheLength];
+  if (wins.length > winsCacheLength) {
+    wins.pop();
+  }
   updateWins();
 }
 function updateWins() {
-  for (let i = 0; i < winsCacheLength; i++) {
+  console.log(wins.length);
+  for (let i = 0; i < wins.length; i++) {
     const element = outcomeElements[i];
     const color = wins[i][1] ? 'green' : 'red'; 
     element.style.color = color;
